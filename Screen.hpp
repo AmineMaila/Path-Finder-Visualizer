@@ -27,7 +27,6 @@ public:
 	~Screen();
 	Screen();
 
-	void	input( void );
 	void	draw( void );
 	void	SetPixel(int x, int y, Uint32 color);
 	void	unlock( void );
@@ -39,7 +38,6 @@ private:
 	SDL_Texture			*texture;
 	SDL_Renderer		*renderer;
 	SDL_Window			*window;
-	SDL_Event			ev;
 	
 };
 

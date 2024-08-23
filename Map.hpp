@@ -2,13 +2,15 @@
 # define MAP_HPP
 
 #include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL_stdinc.h>
 # include <vector>
 # include "Tile.hpp"
 
-# define START 5
-# define END 6
-# define WALL 7
-# define EMPTY 8
+# define START 1
+# define END 2
+# define WALL 3
+# define EMPTY 4
+# define CLOSED 5
 
 class Map
 {
@@ -17,6 +19,7 @@ public:
 	Map();
 
 	void	drawGrid(Screen& screen);
+	void	setType(int& x, int& y, Uint8 type);
 
 
 private:

@@ -1,4 +1,6 @@
 #include "Screen.hpp"
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL_render.h>
 
@@ -37,24 +39,4 @@ void Screen::draw( void )
 	SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, texture, NULL, NULL);
 	SDL_RenderPresent(renderer);
-}
-
-void	Screen::input( void )
-{
-	while(SDL_PollEvent(&ev))
-	{
-		switch (ev.type)
-		{
-			case SDL_QUIT:
-				exit(0);
-				break;
-			case SDL_KEYDOWN:
-				switch (ev.key.keysym.sym)
-				{
-					case SDLK_ESCAPE:
-						exit(0);
-						break;
-				}
-		}
-	}
 }

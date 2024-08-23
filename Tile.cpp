@@ -1,7 +1,6 @@
 #include "Tile.hpp"
 #include "Map.hpp"
 #include "Screen.hpp"
-#include <SDL2/SDL_pixels.h>
 
 Tile::~Tile() {}
 
@@ -13,16 +12,17 @@ Tile::Tile(int x, int y) : Tile()
 	this->y = y;
 	this->type = EMPTY;
 	this->color = CREAM;
+	this->outlineColor = TAN;
 }
 
 void	Tile::drawOutline(Screen& screen)
 {
 	for (int i = 0; i < TILE_SIZE; i++)
 	{
-		screen.SetPixel(x * TILE_SIZE + i, y * TILE_SIZE, BLACK);
-		screen.SetPixel(x * TILE_SIZE, y * TILE_SIZE + i, BLACK);
-		screen.SetPixel(x * TILE_SIZE + i, y * TILE_SIZE + TILE_SIZE - 1, BLACK);
-		screen.SetPixel(x * TILE_SIZE + TILE_SIZE - 1, y * TILE_SIZE + i, BLACK);
+		screen.SetPixel(x * TILE_SIZE + i, y * TILE_SIZE, outlineColor);
+		screen.SetPixel(x * TILE_SIZE, y * TILE_SIZE + i, outlineColor);
+		screen.SetPixel(x * TILE_SIZE + i, y * TILE_SIZE + TILE_SIZE - 1, outlineColor);
+		screen.SetPixel(x * TILE_SIZE + TILE_SIZE - 1, y * TILE_SIZE + i, outlineColor);
 	}
 }
 
@@ -33,19 +33,26 @@ void	Tile::draw(Screen& screen)
 			screen.SetPixel(x * TILE_SIZE + j, y * TILE_SIZE + i, color);
 }
 
-void	Tile::setColor( void )
+void	Tile::setType(Uint8& type)
 {
-	if (type == START)
-		color = BLUE;
-	else if (type == END)
-		color = RED;
-	else if (type == WALL)
-		color = BLACK;
-	else if (type == EMPTY)
-		color = CREAM;
+	if (this->type == type)
+		return;
+	this->type = type;
+	this->outlineColor = LIVER;
+	switch (type)
+	{
+		case START:
+			color = GREEN;
+			break;
+		case END:
+			color = RED;
+			break;
+		case WALL:
+			color = BLACK;
+			break;
+		case EMPTY:
+			color = CREAM;
+			outlineColor = TAN;
+			break;
+	}
 }
-
-// void	Tile::animate(Screen& screen)
-// {
-
-// }
