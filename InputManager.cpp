@@ -27,14 +27,20 @@ void	InputManager::input(Map& map)
 						break;
 					case SDLK_a:
 						SDL_GetMouseState(&mouseX, &mouseY);
-						map.setType(mouseX, mouseY, START);
+						if (!map.endReached)
+							map.setType(mouseX, mouseY, START);
 						break;
 					case SDLK_d:
 						SDL_GetMouseState(&mouseX, &mouseY);
-						map.setType(mouseX, mouseY, END);
+						if (!map.endReached)
+							map.setType(mouseX, mouseY, END);
+						break;
+					case SDLK_r:
+						map.reset();
 						break;
 					case SDLK_SPACE:
 						map.bfsActivate = !map.bfsActivate;
+						break;
 				}
 			case SDL_MOUSEBUTTONDOWN:
 				switch (ev.button.button)

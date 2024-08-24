@@ -1,8 +1,11 @@
 #include "Map.hpp"
 #include "Tile.hpp"
 #include "Screen.hpp"
+#include <SDL2/SDL_stdinc.h>
 #include <cstddef>
+#include <iterator>
 #include <list>
+#include <queue>
 #include <vector>
 
 Map::~Map() {}
@@ -20,7 +23,13 @@ Map::Map()
 			tiles.push_back(Tile(j, i));
 }
 
-void Map::setType(int& x, int& y, Uint8 type)
+void	Map::clearBfs()
+{
+	while (bfs.size())
+		bfs.pop();
+}
+
+void	Map::setType(int& x, int& y, Uint8 type)
 {
 	if (type == START)
 	{
@@ -52,6 +61,24 @@ void Map::setType(int& x, int& y, Uint8 type)
 			end = NULL;
 	}
 	tiles[(y / TILE_SIZE) * COLS + (x / TILE_SIZE)].setType(type);
+}
+
+void	Map::reset( void )
+{
+	clearBfs();
+	bfs.push(start);
+	endReached = false;
+	bfsActivate = false;
+	visited.fill(false);
+	prev.fill(NULL);
+	for (std::vector<Tile>::iterator it = tiles.begin(); it != tiles.end(); it++)
+	{
+		int type = it->getType();
+		if (type != WALL
+			&& type != START
+			&& type != END)
+			it->setType(EMPTY);
+	}
 }
 
 void Map::drawGrid( Screen& screen )
@@ -123,8 +150,6 @@ void	Map::BFS( void )
 	else
 	{
 		BFSPath();
-		visited.fill(false);
-		prev.fill(NULL);
 		bfsActivate = false;
 	}
 

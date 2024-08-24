@@ -24,12 +24,15 @@ public:
 	Map();
 
 	void				drawGrid(Screen& screen);
+	void				reset( void );
 	void				setType(int& x, int& y, Uint8 type);
 	void				BFS( void );
 	void				BFSPath( void );
+	void				clearBfs();
 	std::list<Tile*>	getAdj(Tile& node);
 
 	bool	bfsActivate;
+	bool	endReached;
 
 private:
 	std::vector<Tile>	tiles;
@@ -39,7 +42,6 @@ private:
 	std::queue<Tile*>				bfs;
 	std::array<Tile*, ROWS * COLS>	prev;
 	std::array<bool, ROWS * COLS>	visited;
-	bool							endReached;
 };
 
 #endif
