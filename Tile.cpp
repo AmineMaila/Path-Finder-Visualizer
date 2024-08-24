@@ -24,7 +24,6 @@ Coords&	Tile::getCoords( void )
 	return (p);
 }
 
-
 void	Tile::drawOutline(Screen& screen)
 {
 	for (int i = 0; i < TILE_SIZE; i++)
@@ -40,10 +39,7 @@ void	Tile::draw(Screen& screen)
 {
 	for (int i = 1; i < TILE_SIZE - 1; i++)
 		for (int j = 1; j < TILE_SIZE - 1; j++)
-			screen.SetPixel(p.x * TILE_SIZE + j, p.y * TILE_SIZE + i, color);
-	// if (type != EMPTY)
-	// 	std::cout << type << std::endl;
-		// std::cout << color << std::endl;
+			screen.SetPixel(p.x * TILE_SIZE + j, p.y * TILE_SIZE + i, color);;
 }
 
 int&	Tile::getType( void )
@@ -56,8 +52,6 @@ void	Tile::setType(Uint8 type)
 	if (this->type == type)
 		return;
 	this->type = type;
-	// std::cout << this->type << std::endl;
-	// std::cout << p.x << ", " << p.y << std::endl;
 	this->outlineColor = LIVER;
 	switch (type)
 	{

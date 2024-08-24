@@ -27,7 +27,9 @@ void Map::setType(int& x, int& y, Uint8 type)
 		if (start != NULL)
 		{
 			start->setType(EMPTY);
+			bfs.pop();
 			start = NULL;
+			visited.fill(false);
 		}
 		start = &tiles[(y / TILE_SIZE) * COLS + (x / TILE_SIZE)];
 		bfs.push(start);
@@ -121,6 +123,8 @@ void	Map::BFS( void )
 	else
 	{
 		BFSPath();
+		visited.fill(false);
+		prev.fill(NULL);
 		bfsActivate = false;
 	}
 

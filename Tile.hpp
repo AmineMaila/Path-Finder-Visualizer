@@ -7,7 +7,7 @@
 # include "Screen.hpp"
 # include <list>
 
-# define REDWOOD 0xFF8D5B4C
+# define REDWOOD 0xFF7B68EE
 # define LIGHT_BLUE 0xFF7EA3CC
 # define RED 0xFFB3001B
 # define TAN 0xFFCCAD8F

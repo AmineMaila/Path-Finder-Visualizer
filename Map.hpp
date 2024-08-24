@@ -32,7 +32,6 @@ public:
 	bool	bfsActivate;
 
 private:
-	// int					algoMat[ROWS][COLS];
 	std::vector<Tile>	tiles;
 	Tile				*start;
 	Tile				*end;
