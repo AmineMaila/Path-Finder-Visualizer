@@ -2,13 +2,13 @@ CPP= g++
 
 FLAGS= -Wall -Werror -Wextra -std=c++11
 
-INCLUDES= ./Screen.hpp ./Map.hpp ./Tile.hpp
+INCLUDES= ./Screen.hpp ./Map.hpp ./Tile.hpp InputManager.hpp
 
 SDL_LINKER= -framework SDL2
 
 SDL= -F/Users/mmaila/Library/Frameworks
 
-SRCS= main.cpp Screen.cpp Map.cpp Tile.cpp
+SRCS= main.cpp Screen.cpp Map.cpp Tile.cpp InputManager.cpp
 
 OBJSDIR= objects
 

@@ -4,25 +4,35 @@
 
 Tile::~Tile() {}
 
-Tile::Tile() : x(0), y(0) {}
-
-Tile::Tile(int x, int y) : Tile()
+Tile::Tile() 
 {
-	this->x = x;
-	this->y = y;
+	p.x = 0;
+	p.y = 0;
+}
+
+Tile::Tile(int x, int y)
+{
+	this->p.x = x;
+	this->p.y = y;
 	this->type = EMPTY;
 	this->color = CREAM;
 	this->outlineColor = TAN;
 }
 
+Coords&	Tile::getCoords( void )
+{
+	return (p);
+}
+
+
 void	Tile::drawOutline(Screen& screen)
 {
 	for (int i = 0; i < TILE_SIZE; i++)
 	{
-		screen.SetPixel(x * TILE_SIZE + i, y * TILE_SIZE, outlineColor);
-		screen.SetPixel(x * TILE_SIZE, y * TILE_SIZE + i, outlineColor);
-		screen.SetPixel(x * TILE_SIZE + i, y * TILE_SIZE + TILE_SIZE - 1, outlineColor);
-		screen.SetPixel(x * TILE_SIZE + TILE_SIZE - 1, y * TILE_SIZE + i, outlineColor);
+		screen.SetPixel(p.x * TILE_SIZE + i, p.y * TILE_SIZE, outlineColor);
+		screen.SetPixel(p.x * TILE_SIZE, p.y * TILE_SIZE + i, outlineColor);
+		screen.SetPixel(p.x * TILE_SIZE + i, p.y * TILE_SIZE + TILE_SIZE - 1, outlineColor);
+		screen.SetPixel(p.x * TILE_SIZE + TILE_SIZE - 1, p.y * TILE_SIZE + i, outlineColor);
 	}
 }
 
@@ -30,14 +40,24 @@ void	Tile::draw(Screen& screen)
 {
 	for (int i = 1; i < TILE_SIZE - 1; i++)
 		for (int j = 1; j < TILE_SIZE - 1; j++)
-			screen.SetPixel(x * TILE_SIZE + j, y * TILE_SIZE + i, color);
+			screen.SetPixel(p.x * TILE_SIZE + j, p.y * TILE_SIZE + i, color);
+	// if (type != EMPTY)
+	// 	std::cout << type << std::endl;
+		// std::cout << color << std::endl;
 }
 
-void	Tile::setType(Uint8& type)
+int&	Tile::getType( void )
+{
+	return (type);
+}
+
+void	Tile::setType(Uint8 type)
 {
 	if (this->type == type)
 		return;
 	this->type = type;
+	// std::cout << this->type << std::endl;
+	// std::cout << p.x << ", " << p.y << std::endl;
 	this->outlineColor = LIVER;
 	switch (type)
 	{
@@ -53,6 +73,12 @@ void	Tile::setType(Uint8& type)
 		case EMPTY:
 			color = CREAM;
 			outlineColor = TAN;
+			break;
+		case CLOSED:
+			color = LIGHT_BLUE;
+			break;
+		case PATH:
+			color = BLUE;
 			break;
 	}
 }

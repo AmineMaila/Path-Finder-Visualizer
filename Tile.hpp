@@ -5,6 +5,7 @@
 # include <iostream>
 
 # include "Screen.hpp"
+# include <list>
 
 # define REDWOOD 0xFF8D5B4C
 # define LIGHT_BLUE 0xFF7EA3CC
@@ -19,6 +20,11 @@
 
 void	hexToSDL(SDL_Color& res, unsigned int color);
 
+struct Coords
+{
+	int x, y;
+};
+
 class Tile
 {
 public:
@@ -28,14 +34,15 @@ public:
 
 	void	drawOutline(Screen& screen);
 	void	draw(Screen& screen);
-	void	setType(Uint8& type);
+	void	setType(Uint8 type);
+	int&	getType( void );
+	Coords&	getCoords( void );
 
 private:
 	Uint32		color;
 	Uint32		outlineColor;
 	int			type;
-	int			x;
-	int			y;
+	Coords		p;
 };
 
 #endif
