@@ -1,26 +1,18 @@
 #include "Map.hpp"
-#include "Tile.hpp"
 #include "Screen.hpp"
-#include <SDL2/SDL_stdinc.h>
-#include <cstddef>
+#include <SDL2/SDL_rect.h>
+#include <cstdio>
 #include <iterator>
-#include <list>
-#include <queue>
-#include <vector>
+#include <utility>
 
 Map::~Map() {}
 
-Map::Map()
+Map::Map() : tiles(ROWS, std::vector<Tile>(COLS)), prev(ROWS, std::vector<std::pair<int, int> >(COLS, {-2, -2})) // -2, -2 -> not visited
 {
 	endReached = false;
 	bfsActivate = false;
-	start = NULL;
-	end = NULL;
-	visited.fill(false);
-	prev.fill(NULL);
-	for (int i = 0; i < ROWS; i++)
-		for (int j = 0; j < COLS; j++)
-			tiles.push_back(Tile(j, i));
+	start = std::make_pair(-1, -1);
+	end = std::make_pair(-1, -1) ;
 }
 
 void	Map::clearBfs()
@@ -29,128 +21,151 @@ void	Map::clearBfs()
 		bfs.pop();
 }
 
-void	Map::setType(int& x, int& y, Uint8 type)
+void	Map::setTile(int x, int y, Uint8 type)
 {
-	if (type == START)
+	tiles[y][x].outlineColor = LIVER;
+	switch (type)
 	{
-		if (start != NULL)
-		{
-			start->setType(EMPTY);
-			bfs.pop();
-			start = NULL;
-			visited.fill(false);
-		}
-		start = &tiles[(y / TILE_SIZE) * COLS + (x / TILE_SIZE)];
-		bfs.push(start);
-		visited[(y / TILE_SIZE) * COLS + (x / TILE_SIZE)] = true;
+		case START: // this block of code resets the previous start node so we dont have 2 start nodes
+			if (start != std::make_pair(-1, -1))
+			{
+				prev[start.second][start.first] = std::make_pair(-2, -2);
+				setTile(start.first, start.second, EMPTY);
+				clearBfs();
+			}
+			start = std::make_pair(x, y);
+			bfs.push(start);
+			prev[y][x] = std::make_pair(-1, -1);
+			tiles[y][x].color = GREEN;
+			break;
+		case END:
+			if (end != std::make_pair(-1, -1))
+				setTile(end.first, end.second, EMPTY);
+			end = std::make_pair(x, y);
+			tiles[y][x].color = RED;
+			break;
+		case WALL:
+			tiles[y][x].color = BLACK;
+			break;
+		case EMPTY:
+			if (std::make_pair(x, y) == start)
+			{
+				prev[start.second][start.first] = std::make_pair(-2, -2);
+				start = std::make_pair(-1, -1);
+				clearBfs();
+			}
+			else if (std::make_pair(x, y) == end)
+				end = std::make_pair(-1, -1);
+			tiles[y][x].color = CREAM;
+			tiles[y][x].outlineColor = TAN;
+			break;
+		case CLOSED:
+			tiles[y][x].color = LIGHT_BLUE;
+			break;
+		case PATH:
+			tiles[y][x].color = BLUE;
+			tiles[y][x].outlineColor = BLUE;
+			break;
 	}
-	else if (type == END)
-	{
-		if (end != NULL)
-		{
-			end->setType(EMPTY);
-			end = NULL;
-		}
-		end = &tiles[(y / TILE_SIZE) * COLS + (x / TILE_SIZE)];
-	}
-	else if (type == EMPTY)
-	{
-		if (&tiles[(y / TILE_SIZE) * COLS + (x / TILE_SIZE)] == start)
-			start = NULL;
-		else if (&tiles[(y / TILE_SIZE) * COLS + (x / TILE_SIZE)] == end)
-			end = NULL;
-	}
-	tiles[(y / TILE_SIZE) * COLS + (x / TILE_SIZE)].setType(type);
+	tiles[y][x].type = type;
 }
 
 void	Map::reset( void )
 {
+	for (auto& row : prev)
+	{
+		for (auto& prevTile : row)
+		{
+			if (prevTile != std::make_pair(-1, -1))
+				prevTile = std::make_pair(-2, -2);
+		}
+	}
 	clearBfs();
 	bfs.push(start);
 	endReached = false;
 	bfsActivate = false;
-	visited.fill(false);
-	prev.fill(NULL);
-	for (std::vector<Tile>::iterator it = tiles.begin(); it != tiles.end(); it++)
+	int y = 0;
+	for (auto& row : tiles)
 	{
-		int type = it->getType();
-		if (type != WALL
-			&& type != START
-			&& type != END)
-			it->setType(EMPTY);
+		int x = 0;
+		for (auto& tile : row)
+		{
+			if (tile.type != WALL
+				&& tile.type != START
+				&& tile.type != END)
+				setTile(x, y, EMPTY);
+			x++;
+		}
+		y++;
 	}
 }
 
 void Map::drawGrid( Screen& screen )
 {
 	screen.lock();
-	for (auto& tile : tiles)
+	int y = 0;
+	for (auto& row : tiles)
 	{
-		tile.drawOutline(screen);
-		tile.draw(screen);
+		int x = 0;
+		for (auto& tile : row)
+		{
+			// draws outline
+			for (int i = 0; i < TILE_SIZE; i++)
+			{
+				screen.SetPixel(x + i, y, tile.outlineColor);
+				screen.SetPixel(x, y + i, tile.outlineColor);
+				screen.SetPixel(x + i, y + TILE_SIZE - 1, tile.outlineColor);
+				screen.SetPixel(x + TILE_SIZE - 1, y + i, tile.outlineColor);
+			}
+			// fills cell
+			for (int i = 1; i < TILE_SIZE - 1; i++)
+				for (int j = 1; j < TILE_SIZE - 1; j++)
+					screen.SetPixel(x + j, y + i, tile.color);;
+			x += TILE_SIZE;
+		}
+		y += TILE_SIZE;
 	}
 	screen.unlock();
 }
 
-std::list<Tile*>	Map::getAdj(Tile& node)
-{
-	std::list<Tile*>	adj;
-	Coords				point = node.getCoords();
-
-	if (point.x + 1 < COLS)
-		adj.push_back(&tiles[point.y * COLS + point.x + 1]);
-	if (point.y + 1 < ROWS)
-		adj.push_back(&tiles[(point.y + 1) * COLS + point.x]);
-	if (point.y - 1 >= 0)
-		adj.push_back(&tiles[(point.y - 1) * COLS + point.x]);
-	if (point.x - 1 >= 0)
-		adj.push_back(&tiles[point.y * COLS + point.x - 1]);
-		
-	return (adj);
-}
-
 void	Map::BFSPath( void )
 {
-	Coords	endCoords = end->getCoords();
-	int index = endCoords.y * COLS + endCoords.x;
-	
-	while (prev[index] != NULL)
+	std::pair<int, int> previous = prev[end.second][end.first];
+	while (prev[previous.second][previous.first] != std::pair<int, int>(-1, -1))
 	{
-		Tile* curr = prev[index];
-		index = curr->getCoords().y * COLS + curr->getCoords().x;
-		if (prev[index] != NULL)
-			curr->setType(PATH);
+		setTile(previous.first, previous.second, PATH);
+		previous = prev[previous.second][previous.first];
 	}
 }
 
 void	Map::BFS( void )
 {
+	int	directions[4][2] = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
 	if (!bfs.empty() && !endReached)
 	{
-		Tile* node = bfs.front();
-		std::list<Tile*> neighbours = getAdj(*node);
-		for (auto& next : neighbours)
+		int nodeX = bfs.front().first;
+		int nodeY = bfs.front().second;
+
+		for (int i = 0; i < 4; i++)
 		{
-			Coords	nextCoords = next->getCoords();
-			if (visited[nextCoords.y * COLS + nextCoords.x] == false && next->getType() != WALL)
+			int newx = nodeX + directions[i][0];
+			int newy = nodeY + directions[i][1];
+			if (newx < COLS && newx >= 0 && newy < ROWS && newy >= 0 && prev[newy][newx] == std::make_pair(-2, -2) && tiles[newy][newx].type != WALL )
 			{
-				bfs.push(next);
-				visited[nextCoords.y * COLS + nextCoords.x] = true;
-				prev[nextCoords.y * COLS + nextCoords.x] = node;
-				if (next == end)
+				bfs.push({newx, newy});
+				prev[newy][newx] = {nodeX, nodeY};
+				if (newx == end.first && newy == end.second)
 				{
 					endReached = true;
-					break;
+					BFSPath();
+					return ;
 				}
-				next->setType(CLOSED);
+				setTile(newx, newy, CLOSED);
 			}
 		}
 		bfs.pop();
 	}
 	else
-	{
-		BFSPath();
 		bfsActivate = false;
-	}
 
 }

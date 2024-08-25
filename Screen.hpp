@@ -9,8 +9,8 @@
 
 # define TILE_SIZE 16
 
-# define ROWS 32
-# define COLS 50
+# define ROWS 42
+# define COLS 60
 
 # define SCREEN_WIDTH COLS * TILE_SIZE
 # define SCREEN_HEIGHT ROWS * TILE_SIZE

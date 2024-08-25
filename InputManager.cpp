@@ -28,12 +28,12 @@ void	InputManager::input(Map& map)
 					case SDLK_a:
 						SDL_GetMouseState(&mouseX, &mouseY);
 						if (!map.endReached)
-							map.setType(mouseX, mouseY, START);
+							map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, START);
 						break;
 					case SDLK_d:
 						SDL_GetMouseState(&mouseX, &mouseY);
 						if (!map.endReached)
-							map.setType(mouseX, mouseY, END);
+							map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, END);
 						break;
 					case SDLK_r:
 						map.reset();
@@ -48,20 +48,13 @@ void	InputManager::input(Map& map)
 					SDL_GetMouseState(&mouseX, &mouseY);
 					case SDL_BUTTON_LEFT:
 						buttonLeft = true;
-						map.setType(mouseX, mouseY, WALL);
+						map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, WALL);
 						break;
 					case SDL_BUTTON_RIGHT:
 						buttonRight = true;
-						map.setType(mouseX, mouseY, EMPTY);
+						map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, EMPTY);
 						break;
 				}
-				break;
-			case SDL_MOUSEMOTION:
-				SDL_GetMouseState(&mouseX, &mouseY);
-				if (buttonLeft)
-					map.setType(mouseX, mouseY, WALL);
-				else if (buttonRight)
-					map.setType(mouseX, mouseY, EMPTY);
 				break;
 			case SDL_MOUSEBUTTONUP:
 				switch (ev.button.button)
@@ -73,6 +66,13 @@ void	InputManager::input(Map& map)
 						buttonRight = false;
 						break;
 				}
+				break;
+			case SDL_MOUSEMOTION:
+				SDL_GetMouseState(&mouseX, &mouseY);
+				if (buttonLeft)
+					map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, WALL);
+				else if (buttonRight)
+					map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, EMPTY);
 				break;
 		}
 	}

@@ -25,8 +25,8 @@ void	Screen::lock( void )
 
 void Screen::SetPixel(int x, int y, Uint32 color)
 {
-    int index = y * (bytesPerRow / sizeof(Uint32)) + x;
-    pixels[index] = color;
+	Uint32* pixelPtr = pixels + (y * (bytesPerRow / sizeof(Uint32)) + x);
+    *pixelPtr = color;
 }
 
 void	Screen::unlock()

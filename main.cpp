@@ -1,7 +1,6 @@
 #include "InputManager.hpp"
 #include "Screen.hpp"
 #include "Map.hpp"
-#include "Tile.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_mouse.h>
