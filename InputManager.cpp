@@ -42,18 +42,21 @@ void	InputManager::input(Map& map)
 						map.bfsActivate = !map.bfsActivate;
 						break;
 				}
+				break;
 			case SDL_MOUSEBUTTONDOWN:
-				switch (ev.button.button)
+				SDL_GetMouseState(&mouseX, &mouseY);
+				if (!map.bfsActivate)
 				{
-					SDL_GetMouseState(&mouseX, &mouseY);
-					case SDL_BUTTON_LEFT:
+					if(ev.button.button ==  SDL_BUTTON_LEFT)
+					{
 						buttonLeft = true;
 						map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, WALL);
-						break;
-					case SDL_BUTTON_RIGHT:
+					}
+					else
+					{
 						buttonRight = true;
 						map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, EMPTY);
-						break;
+					}
 				}
 				break;
 			case SDL_MOUSEBUTTONUP:
