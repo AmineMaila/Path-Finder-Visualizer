@@ -1,31 +1,21 @@
+#include "AlgoManager.hpp"
 #include "InputManager.hpp"
 #include "Screen.hpp"
 #include "Map.hpp"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_mouse.h>
-#include <queue>
-
-void	hexToSDL(SDL_Color& res, unsigned int color)
-{
-	res.r = (color >> 16) & 0xFF;
-	res.g = (color >> 8) & 0xFF;
-	res.b = color & 0xFF;
-	res.a = 255;
-}
 
 int main()
 {
 	Screen			screen;
 	InputManager	in;
 	Map				map;
+	AlgoManager		algoManager;
 
 	while (true)
 	{
-		if (map.bfsActivate)
-			map.BFS();
+		if (algoManager.simulate)
+			algoManager.execute(map);
 		map.drawGrid(screen);
 		screen.draw();
-		in.input(map);
+		in.input(map, algoManager);
 	}
 }

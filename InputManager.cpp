@@ -1,14 +1,12 @@
 #include "InputManager.hpp"
+#include "AlgoManager.hpp"
 #include "Map.hpp"
-#include <SDL2/SDL_keyboard.h>
-#include <SDL2/SDL_keycode.h>
-#include <SDL2/SDL_mouse.h>
 
 InputManager::~InputManager() {}
 
 InputManager::InputManager() : buttonLeft(false), buttonRight(false) {}
 
-void	InputManager::input(Map& map)
+void	InputManager::input(Map& map, AlgoManager& algoManager)
 {
 	SDL_Event	ev;
 
@@ -27,25 +25,34 @@ void	InputManager::input(Map& map)
 						break;
 					case SDLK_a:
 						SDL_GetMouseState(&mouseX, &mouseY);
-						if (!map.endReached)
+						if (!algoManager.simulate)
 							map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, START);
 						break;
 					case SDLK_d:
 						SDL_GetMouseState(&mouseX, &mouseY);
-						if (!map.endReached)
+						if (!algoManager.simulate)
 							map.setTile(mouseX / TILE_SIZE, mouseY / TILE_SIZE, END);
 						break;
 					case SDLK_r:
 						map.reset();
+						algoManager.reset();
 						break;
 					case SDLK_SPACE:
-						map.bfsActivate = !map.bfsActivate;
+						algoManager.setStart(map.start);
+						algoManager.simulate = true;
+						break;
+					case SDLK_RIGHT:
+						if (!algoManager.simulate)
+							algoManager.nextAlgo();
+						break;
+					case SDLK_l:
+						map.randomizeWalls();
 						break;
 				}
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				SDL_GetMouseState(&mouseX, &mouseY);
-				if (!map.bfsActivate)
+				if (!algoManager.simulate)
 				{
 					if(ev.button.button ==  SDL_BUTTON_LEFT)
 					{

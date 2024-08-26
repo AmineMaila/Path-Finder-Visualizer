@@ -1,61 +1,32 @@
 #include "Map.hpp"
 #include "Screen.hpp"
-#include <SDL2/SDL_rect.h>
-#include <cstdio>
-#include <iterator>
-#include <utility>
-
-Map::~Map() {}
-
-Map::Map() : tiles(ROWS, std::vector<Tile>(COLS)), prev(ROWS, std::vector<std::pair<int, int> >(COLS, {-2, -2})) // -2, -2 -> not visited
-{
-	endReached = false;
-	bfsActivate = false;
-	start = std::make_pair(-1, -1);
-	end = std::make_pair(-1, -1) ;
-}
-
-void	Map::clearBfs()
-{
-	while (bfs.size())
-		bfs.pop();
-}
+#include <cstdlib>
 
 void	Map::setTile(int x, int y, Uint8 type)
 {
 	tiles[y][x].outlineColor = LIVER;
 	switch (type)
 	{
-		case START: // this block of code resets the previous start node so we dont have 2 start nodes
-			if (start != std::make_pair(-1, -1))
-			{
-				prev[start.second][start.first] = std::make_pair(-2, -2);
-				setTile(start.first, start.second, EMPTY);
-				clearBfs();
-			}
-			start = std::make_pair(x, y);
-			bfs.push(start);
-			prev[y][x] = std::make_pair(-1, -1);
+		case START:
+			if (start.x != -1 && start.y != -1)
+				setTile(start.x, start.y, EMPTY);
+			start = (Coords){x, y};
 			tiles[y][x].color = GREEN;
 			break;
 		case END:
-			if (end != std::make_pair(-1, -1))
-				setTile(end.first, end.second, EMPTY);
-			end = std::make_pair(x, y);
+			if (end.x != -1 && end.y != -1)
+				setTile(end.x, end.y, EMPTY);
+			end = (Coords){x, y};
 			tiles[y][x].color = RED;
 			break;
 		case WALL:
 			tiles[y][x].color = BLACK;
 			break;
 		case EMPTY:
-			if (std::make_pair(x, y) == start)
-			{
-				prev[start.second][start.first] = std::make_pair(-2, -2);
-				start = std::make_pair(-1, -1);
-				clearBfs();
-			}
-			else if (std::make_pair(x, y) == end)
-				end = std::make_pair(-1, -1);
+			if (x == start.x && y == start.y)
+				start = (Coords){-1, -1};
+			else if (x == end.x && y == end.y)
+				end = (Coords){-1, -1};
 			tiles[y][x].color = CREAM;
 			tiles[y][x].outlineColor = TAN;
 			break;
@@ -72,31 +43,15 @@ void	Map::setTile(int x, int y, Uint8 type)
 
 void	Map::reset( void )
 {
-	for (auto& row : prev)
+	for (int i = 0; i < ROWS; i++)
 	{
-		for (auto& prevTile : row)
+		for (int j = 0; j < COLS; j++)
 		{
-			if (prevTile != std::make_pair(-1, -1))
-				prevTile = std::make_pair(-2, -2);
+			if (tiles[i][j].type != WALL
+				&& tiles[i][j].type != START
+				&& tiles[i][j].type != END)
+				setTile(j, i, EMPTY);
 		}
-	}
-	clearBfs();
-	bfs.push(start);
-	endReached = false;
-	bfsActivate = false;
-	int y = 0;
-	for (auto& row : tiles)
-	{
-		int x = 0;
-		for (auto& tile : row)
-		{
-			if (tile.type != WALL
-				&& tile.type != START
-				&& tile.type != END)
-				setTile(x, y, EMPTY);
-			x++;
-		}
-		y++;
 	}
 }
 
@@ -128,44 +83,19 @@ void Map::drawGrid( Screen& screen )
 	screen.unlock();
 }
 
-void	Map::BFSPath( void )
+void Map::randomizeWalls( void )
 {
-	std::pair<int, int> previous = prev[end.second][end.first];
-	while (prev[previous.second][previous.first] != std::pair<int, int>(-1, -1))
+	for (int i = 0; i < ROWS; i++)
+		for (int j = 0; j < COLS; j++)
+			if (tiles[i][j].type == WALL)
+				setTile(j, i, EMPTY);
+	std::srand(std::time(0));
+	for (int i = 0; i < ROWS; i++)
 	{
-		setTile(previous.first, previous.second, PATH);
-		previous = prev[previous.second][previous.first];
-	}
-}
-
-void	Map::BFS( void )
-{
-	int	directions[4][2] = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
-	if (!bfs.empty() && !endReached)
-	{
-		int nodeX = bfs.front().first;
-		int nodeY = bfs.front().second;
-
-		for (int i = 0; i < 4; i++)
+		for (int j = 0; j < COLS; j++)
 		{
-			int newx = nodeX + directions[i][0];
-			int newy = nodeY + directions[i][1];
-			if (newx < COLS && newx >= 0 && newy < ROWS && newy >= 0 && prev[newy][newx] == std::make_pair(-2, -2) && tiles[newy][newx].type != WALL )
-			{
-				bfs.push({newx, newy});
-				prev[newy][newx] = {nodeX, nodeY};
-				if (newx == end.first && newy == end.second)
-				{
-					endReached = true;
-					BFSPath();
-					return ;
-				}
-				setTile(newx, newy, CLOSED);
-			}
+			if (std::rand() % 4 == 0)
+				setTile(j, i, WALL);
 		}
-		bfs.pop();
 	}
-	else
-		bfsActivate = false;
-
 }

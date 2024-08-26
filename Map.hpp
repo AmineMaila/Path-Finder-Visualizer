@@ -1,11 +1,9 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
-#include <array>
-#include <queue>
 # include <vector>
+#include <iostream>
 #include "Screen.hpp"
-#include <list>
 
 # define START 1
 # define END 2
@@ -25,6 +23,8 @@
 # define LIVER 0xFFC2A883
 # define TAN 0xFFF1D6B0
 
+#define INF INT_MAX
+
 struct	Tile
 {
 	Uint32	color;
@@ -34,32 +34,28 @@ struct	Tile
 	Tile(): color(CREAM), outlineColor(TAN), type(EMPTY) {}
 };
 
-class Map
+struct	Coords
 {
-public:
-	~Map();
-	Map();
+	int x, y;
+};
+
+struct Map
+{
+	std::vector<std::vector <Tile> >	tiles;
+	Coords	start;
+	Coords	end;
 
 	void	drawOutline(Screen& screen, Tile& tile);
 	void	drawGrid(Screen& screen);
-
 	void	setTile(int x, int y, Uint8 type);
-
 	void	reset( void );
-	void	BFS( void );
-	void	BFSPath( void );
-	void	clearBfs();
+	void	randomizeWalls( void );
 
-	bool	bfsActivate;
-	bool	endReached;
-
-private:
-	std::vector<std::vector <Tile> >	tiles;
-	std::pair<int, int>	start;
-	std::pair<int, int>	end;
-
-	std::queue<std::pair<int, int> >				bfs;
-	std::vector<std::vector<std::pair<int, int> > >	prev;
+	Map() : tiles(ROWS, std::vector<Tile>(COLS))
+	{
+		start = (Coords){-1, -1};
+		end = (Coords){-1, -1};
+	}
 };
 
 #endif
