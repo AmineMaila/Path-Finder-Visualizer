@@ -91,11 +91,7 @@ void Map::randomizeWalls( void )
 				setTile(j, i, EMPTY);
 	std::srand(std::time(0));
 	for (int i = 0; i < ROWS; i++)
-	{
 		for (int j = 0; j < COLS; j++)
-		{
-			if (std::rand() % 4 == 0)
+			if (std::rand() % 4 == 0 && tiles[i][j].type != START && tiles[i][j].type != END)
 				setTile(j, i, WALL);
-		}
-	}
 }
