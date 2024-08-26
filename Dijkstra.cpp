@@ -4,6 +4,31 @@ Dijkstra::Dijkstra(): costs(ROWS, std::vector<int>(COLS, INF)) {}
 
 Dijkstra::~Dijkstra() {}
 
+bool	canMove(Map& map, Coords& dir, Coords& node)
+{
+	if (dir.x == 1 && dir.y == 1)
+	{
+		if (map.tiles[node.y + 1][node.x].type == WALL && map.tiles[node.y][node.x + 1].type == WALL)
+			return (false);
+	}
+	else if (dir.x == -1 && dir.y == 1)
+	{
+		if (map.tiles[node.y + 1][node.x].type == WALL && map.tiles[node.y][node.x - 1].type == WALL)
+			return (false);
+	}
+	else if (dir.x == -1 && dir.y == -1)
+	{
+		if (map.tiles[node.y - 1][node.x].type == WALL && map.tiles[node.y][node.x - 1].type == WALL)
+			return (false);
+	}
+	else if (dir.x == 1 && dir.y == -1)
+	{
+		if (map.tiles[node.y - 1][node.x].type == WALL && map.tiles[node.y][node.x + 1].type == WALL)
+			return (false);
+	}
+	return (true);
+}
+
 void	Dijkstra::run(Map& map)
 {
 	std::vector<std::pair<Coords, int> > directions{{{1, 0}, 10}, {{0, 1}, 10}, {{0, -1}, 10}, {{-1, 0}, 10}, {{1, 1}, 14}, {{1, -1}, 14}, {{-1, 1}, 14}, {{-1, -1}, 14}};
@@ -22,7 +47,7 @@ void	Dijkstra::run(Map& map)
 
 			if (next.coords.x < COLS && next.coords.x >= 0 && next.coords.y < ROWS && next.coords.y >= 0 && map.tiles[next.coords.y][next.coords.x].type != WALL && map.tiles[next.coords.y][next.coords.x].type != START)
 			{
-				if (next.cost < costs[next.coords.y][next.coords.x])
+				if (next.cost < costs[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords))
 				{
 					costs[next.coords.y][next.coords.x] = next.cost;
 					dijkstra.push(next);
