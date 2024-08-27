@@ -14,6 +14,7 @@ public:
 	virtual void	reset( void );
 
 private:
+	std::vector<Coords>	directions;
 	std::queue<Coords>	bfs;
 
 };

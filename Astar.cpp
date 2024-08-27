@@ -1,23 +1,23 @@
 #include "Astar.hpp"
 #include "Screen.hpp"
-#include <functional>
 #include <queue>
 #include <vector>
 
 Astar::~Astar() {}
 
-Astar::Astar(): gcosts(ROWS, std::vector<int>(COLS, INF)), fcosts(ROWS, std::vector<int>(COLS, INF)) {}
+Astar::Astar(): fcosts(ROWS, std::vector<int>(COLS, INF))
+{
+	directions = {{{1, 0}, 10}, {{0, 1}, 10}, {{0, -1}, 10}, {{-1, 0}, 10}, {{1, 1}, 14}, {{1, -1}, 14}, {{-1, 1}, 14}, {{-1, -1}, 14}};
+}
 
 
 int	Astar::heuristic(Coords& node1, Coords& node2)
 {
-	return ((abs(node1.x - node2.x) + abs(node1.y - node2.y)) * 10);
+	return ((abs(node1.x - node2.x) + abs(node1.y - node2.y)) * 7); // multiplied by 7 so the calculation doesn't overshoot the hypothetical distance (note : this is necessary because the heuristic is calculated with manhaten distance)
 }
 
 void	Astar::run(Map& map)
 {
-	std::vector<std::pair<Coords, int> > directions{{{1, 0}, 10}, {{0, 1}, 10}, {{0, -1}, 10}, {{-1, 0}, 10}, {{1, 1}, 14}, {{1, -1}, 14}, {{-1, 1}, 14}, {{-1, -1}, 14}};
-
 	if (!aStar.empty() && !endReached)
 	{
 		ANode currNode = aStar.top();
@@ -29,14 +29,12 @@ void	Astar::run(Map& map)
 			next.coords.x = currNode.coords.x + directions[i].first.x;
 			next.coords.y = currNode.coords.y + directions[i].first.y;
 
-
 			if (next.coords.x < COLS && next.coords.x >= 0 && next.coords.y < ROWS && next.coords.y >= 0 && map.tiles[next.coords.y][next.coords.x].type != WALL && map.tiles[next.coords.y][next.coords.x].type != START)
 			{
 				next.gcost = currNode.gcost + directions[i].second;
 				next.fcost = next.gcost + heuristic(next.coords, map.end);
 				if (next.fcost < fcosts[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords)) // ((prev[next.coords.y][next.coords.x].x == -2 && prev[next.coords.y][next.coords.x].y == -2) &&
 				{
-					gcosts[next.coords.y][next.coords.x] = next.gcost;
 					fcosts[next.coords.y][next.coords.x] = next.fcost;
 					aStar.push(next);
 					prev[next.coords.y][next.coords.x] = currNode.coords;
@@ -63,13 +61,8 @@ void	Astar::reset( void )
 		aStar.pop();
 
 	for (int i = 0; i < ROWS; i++)
-	{
 		for (int j = 0; j < COLS; j++)
-		{
-			gcosts[i][j] = INF;
 			fcosts[i][j] = INF;
-		}
-	}
 }
 
 void	Astar::setStart(Map& map)

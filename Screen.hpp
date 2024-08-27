@@ -7,10 +7,10 @@
 #include <SDL2/SDL_render.h>
 # include <vector>
 
-# define TILE_SIZE 24
+# define TILE_SIZE 20
 
 # define ROWS 32
-# define COLS 55
+# define COLS 52
 
 # define SCREEN_WIDTH COLS * TILE_SIZE
 # define SCREEN_HEIGHT ROWS * TILE_SIZE

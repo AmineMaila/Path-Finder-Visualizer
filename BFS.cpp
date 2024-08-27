@@ -1,26 +1,29 @@
 #include "BFS.hpp"
+#include "Algo.hpp"
 
-BFS::BFS() {}
+BFS::BFS()
+{
+	directions = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
+}
 
 BFS::~BFS() {}
 
 void	BFS::run(Map& map)
 {
-	int	directions[4][2] = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
 	if (!bfs.empty() && !endReached)
 	{
-		Coords node = bfs.front();
+		Coords currNode = bfs.front();
 		bfs.pop();
 
 		for (int i = 0; i < 4; i++)
 		{
 			Coords next;
-			next.x = node.x + directions[i][0];
-			next.y = node.y + directions[i][1];
-			if (next.x < COLS && next.x >= 0 && next.y < ROWS && next.y >= 0 && prev[next.y][next.x].x == -2 && prev[next.y][next.x].y == -2 && map.tiles[next.y][next.x].type != WALL)
+			next.x = currNode.x + directions[i].x;
+			next.y = currNode.y + directions[i].y;
+			if (next.x < COLS && next.x >= 0 && next.y < ROWS && next.y >= 0 && prev[next.y][next.x] == (Coords){-2, -2} && map.tiles[next.y][next.x].type != WALL)
 			{
 				bfs.push({next.x, next.y});
-				prev[next.y][next.x] = node;
+				prev[next.y][next.x] = currNode;
 				if (next.x == map.end.x && next.y == map.end.y)
 				{
 					endReached = true;

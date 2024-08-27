@@ -1,4 +1,5 @@
 #include "Map.hpp"
+#include "Algo.hpp"
 #include "Screen.hpp"
 #include <cstdlib>
 
@@ -32,12 +33,12 @@ void	Map::setTile(int x, int y, Uint8 type)
 			tiles[y][x].color = CREAM;
 			tiles[y][x].outlineColor = TAN;
 			break;
-		case CLOSED:
-			tiles[y][x].color = LIGHT_BLUE;
-			break;
 		case PATH:
 			tiles[y][x].color = BLUE;
 			tiles[y][x].outlineColor = BLUE;
+			break;
+		case CLOSED:
+			tiles[y][x].color = LIGHT_BLUE;
 			break;
 	}
 	tiles[y][x].type = type;

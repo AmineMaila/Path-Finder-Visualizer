@@ -30,8 +30,8 @@ public:
 
 
 private:
+	std::vector<std::pair<Coords, int> > directions;
 	std::priority_queue<ANode, std::vector<ANode>, std::greater<ANode> >	aStar;
-	std::vector<std::vector<int> >											gcosts;
 	std::vector<std::vector<int> >											fcosts;
 };
 

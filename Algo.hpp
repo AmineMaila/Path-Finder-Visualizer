@@ -6,24 +6,6 @@
 #include "Screen.hpp"
 #include "Map.hpp"
 
-# define START 1
-# define END 2
-# define WALL 3
-# define EMPTY 4
-# define CLOSED 5
-# define PATH 6
-
-# define REDWOOD 0xFF7B68EE
-# define RED 0xFFB3001B
-# define WHITE 0xFFFFFFFF
-# define GREEN 0xFF008000
-# define BLACK 0xFF262626
-# define BLUE 0xFF255C99
-# define LIGHT_BLUE 0xFF7EA3CC
-# define CREAM 0xFFF3E9DC
-# define LIVER 0xFFC2A883
-# define TAN 0xFFF1D6B0
-
 // ABSTRACT CLASS ALGO
 class Algo
 {
@@ -39,11 +21,14 @@ public:
 	void	path(Map& map)
 	{
 		Coords previous = prev[map.end.y][map.end.x];
+		int count = 0;
 		while (prev[previous.y][previous.x].x != -1 && prev[previous.y][previous.x].y != -1)
 		{
+			count++;
 			map.setTile(previous.x, previous.y, PATH);
 			previous = prev[previous.y][previous.x];
 		}
+		std::cout << count << std::endl;
 	}
 
 	std::vector<std::vector<Coords> >	prev;

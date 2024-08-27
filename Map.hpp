@@ -12,9 +12,7 @@
 # define CLOSED 5
 # define PATH 6
 
-# define REDWOOD 0xFF7B68EE
 # define RED 0xFFB3001B
-# define WHITE 0xFFFFFFFF
 # define GREEN 0xFF008000
 # define BLACK 0xFF262626
 # define BLUE 0xFF255C99
@@ -22,6 +20,7 @@
 # define CREAM 0xFFF3E9DC
 # define LIVER 0xFFC2A883
 # define TAN 0xFFF1D6B0
+# define DARKRED 0xFF8C3131
 
 #define INF INT_MAX
 
@@ -37,6 +36,16 @@ struct	Tile
 struct	Coords
 {
 	int x, y;
+
+	bool	operator==(const Coords& other)
+	{
+		return (other.x == x && other.y == y);
+	}
+
+	bool	operator!=(const Coords& other)
+	{
+		return (other.x != x || other.y != y);
+	}
 };
 
 struct Map

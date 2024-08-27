@@ -1,13 +1,14 @@
 #include "Dijkstra.hpp"
 
-Dijkstra::Dijkstra(): costs(ROWS, std::vector<int>(COLS, INF)) {}
+Dijkstra::Dijkstra(): costs(ROWS, std::vector<int>(COLS, INF))
+{
+	directions = {{{1, 0}, 10}, {{0, 1}, 10}, {{0, -1}, 10}, {{-1, 0}, 10}, {{1, 1}, 14}, {{1, -1}, 14}, {{-1, 1}, 14}, {{-1, -1}, 14}};
+}
 
 Dijkstra::~Dijkstra() {}
 
 void	Dijkstra::run(Map& map)
 {
-	std::vector<std::pair<Coords, int> > directions{{{1, 0}, 10}, {{0, 1}, 10}, {{0, -1}, 10}, {{-1, 0}, 10}, {{1, 1}, 14}, {{1, -1}, 14}, {{-1, 1}, 14}, {{-1, -1}, 14}};
-
 	if (!dijkstra.empty() && !endReached)
 	{
 		DNode currNode = dijkstra.top();
