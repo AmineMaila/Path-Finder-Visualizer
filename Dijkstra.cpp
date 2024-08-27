@@ -4,49 +4,24 @@ Dijkstra::Dijkstra(): costs(ROWS, std::vector<int>(COLS, INF)) {}
 
 Dijkstra::~Dijkstra() {}
 
-bool	canMove(Map& map, Coords& dir, Coords& node)
-{
-	if (dir.x == 1 && dir.y == 1)
-	{
-		if (map.tiles[node.y + 1][node.x].type == WALL && map.tiles[node.y][node.x + 1].type == WALL)
-			return (false);
-	}
-	else if (dir.x == -1 && dir.y == 1)
-	{
-		if (map.tiles[node.y + 1][node.x].type == WALL && map.tiles[node.y][node.x - 1].type == WALL)
-			return (false);
-	}
-	else if (dir.x == -1 && dir.y == -1)
-	{
-		if (map.tiles[node.y - 1][node.x].type == WALL && map.tiles[node.y][node.x - 1].type == WALL)
-			return (false);
-	}
-	else if (dir.x == 1 && dir.y == -1)
-	{
-		if (map.tiles[node.y - 1][node.x].type == WALL && map.tiles[node.y][node.x + 1].type == WALL)
-			return (false);
-	}
-	return (true);
-}
-
 void	Dijkstra::run(Map& map)
 {
 	std::vector<std::pair<Coords, int> > directions{{{1, 0}, 10}, {{0, 1}, 10}, {{0, -1}, 10}, {{-1, 0}, 10}, {{1, 1}, 14}, {{1, -1}, 14}, {{-1, 1}, 14}, {{-1, -1}, 14}};
 
 	if (!dijkstra.empty() && !endReached)
 	{
-		Node currNode = dijkstra.top();
+		DNode currNode = dijkstra.top();
 		dijkstra.pop();
 
 		for (int i = 0; i < 8; i++)
 		{
-			Node	next;
+			DNode	next;
 			next.coords.x = currNode.coords.x + directions[i].first.x;
 			next.coords.y = currNode.coords.y + directions[i].first.y;
-			next.cost = currNode.cost + directions[i].second;
 
 			if (next.coords.x < COLS && next.coords.x >= 0 && next.coords.y < ROWS && next.coords.y >= 0 && map.tiles[next.coords.y][next.coords.x].type != WALL && map.tiles[next.coords.y][next.coords.x].type != START)
 			{
+				next.cost = currNode.cost + directions[i].second;
 				if (next.cost < costs[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords))
 				{
 					costs[next.coords.y][next.coords.x] = next.cost;
@@ -62,7 +37,7 @@ void	Dijkstra::run(Map& map)
 				}
 			}
 		}
-	}
+	}	
 }
 
 void	Dijkstra::reset( void )
@@ -79,8 +54,10 @@ void	Dijkstra::reset( void )
 			cost = INF;
 }
 
-void	Dijkstra::setStart(Coords& start)
+void	Dijkstra::setStart(Map& map)
 {
-	dijkstra.push((Node){0, start});
-	prev[start.y][start.x] = (Coords){-1, -1};
+	if (map.start.x == -1 && map.start.y == -1)
+		return;
+	dijkstra.push((DNode){0, map.start});
+	prev[map.start.y][map.start.x] = (Coords){-1, -1};
 }

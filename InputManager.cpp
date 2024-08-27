@@ -38,7 +38,7 @@ void	InputManager::input(Map& map, AlgoManager& algoManager)
 						algoManager.reset();
 						break;
 					case SDLK_SPACE:
-						algoManager.setStart(map.start);
+						algoManager.setStart(map);
 						algoManager.simulate = true;
 						break;
 					case SDLK_RIGHT:
@@ -46,7 +46,8 @@ void	InputManager::input(Map& map, AlgoManager& algoManager)
 							algoManager.nextAlgo();
 						break;
 					case SDLK_l:
-						map.randomizeWalls();
+						if (!algoManager.simulate)
+							map.randomizeWalls();
 						break;
 				}
 				break;

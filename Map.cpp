@@ -4,6 +4,8 @@
 
 void	Map::setTile(int x, int y, Uint8 type)
 {
+	if (x >= COLS || x < 0 || y >= ROWS || y < 0)
+		return ;
 	tiles[y][x].outlineColor = LIVER;
 	switch (type)
 	{
@@ -94,4 +96,12 @@ void Map::randomizeWalls( void )
 		for (int j = 0; j < COLS; j++)
 			if (std::rand() % 4 == 0 && tiles[i][j].type != START && tiles[i][j].type != END)
 				setTile(j, i, WALL);
+}
+
+bool	canMove(Map& map, Coords& dir, Coords& node) // this function prevent the algo to move through walls diagonally
+{
+	if (dir.x + node.x != node.x && dir.y + node.y != node.y)
+		if (map.tiles[node.y + dir.y][node.x].type == WALL && map.tiles[node.y][node.x + dir.x].type == WALL)
+			return (false);
+	return (true);
 }

@@ -58,4 +58,6 @@ struct Map
 	}
 };
 
+bool	canMove(Map& map, Coords& dir, Coords& node);
+
 #endif

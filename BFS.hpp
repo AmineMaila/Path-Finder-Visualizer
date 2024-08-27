@@ -10,7 +10,7 @@ public:
 	~BFS();
 
 	virtual void	run(Map& map);
-	virtual void	setStart(Coords& start);
+	virtual void	setStart(Map& map);
 	virtual void	reset( void );
 
 private:

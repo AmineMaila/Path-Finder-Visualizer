@@ -24,17 +24,6 @@
 # define LIVER 0xFFC2A883
 # define TAN 0xFFF1D6B0
 
-struct	Node
-{
-	int		cost;
-	Coords	coords;
-
-	bool operator>(const Node& other) const
-	{
-        return cost > other.cost;
-	}
-};
-
 // ABSTRACT CLASS ALGO
 class Algo
 {
@@ -44,7 +33,7 @@ public:
 	Algo() : prev(ROWS, std::vector<Coords>(COLS, {-2, -2})) /* -2, -2 -> not visited */, endReached(false) {}
 
 	virtual void	run(Map& map) = 0;
-	virtual void	setStart(Coords& start) = 0;
+	virtual void	setStart(Map& map) = 0;
 	virtual void	reset( void ) = 0;
 
 	void	path(Map& map)

@@ -43,8 +43,10 @@ void	BFS::reset( void )
 		bfs.pop();
 }
 
-void	BFS::setStart(Coords& start)
+void	BFS::setStart(Map& map)
 {
-	bfs.push(start);
-	prev[start.y][start.x] = (Coords){-1, -1};
+	if (map.start.x == -1 && map.start.y == -1)
+		return;
+	bfs.push(map.start);
+	prev[map.start.y][map.start.x] = (Coords){-1, -1};
 }

@@ -1,6 +1,7 @@
 #ifndef ALGOMANAGER_HPP
 #define ALGOMANAGER_HPP
 
+#include "Astar.hpp"
 #include "BFS.hpp"
 #include "Dijkstra.hpp"
 #include "Algo.hpp"
@@ -14,7 +15,7 @@ public:
 
 	void nextAlgo( void )
 	{
-		index = (index + 1) % 2; // increment the divisor when adding new algorthims
+		index = (index + 1) % 3; // increment the divisor when adding new algorthims
 		std::cout << index << std::endl;
 		switch (index)
 		{
@@ -24,12 +25,15 @@ public:
 			case 1:
 				algorithm = &dijkstra;
 				break;
+			case 2:
+				algorithm = &aStar;
+				break;
 		}
 	}
 
-	void	setStart(Coords& start)
+	void	setStart(Map& map)
 	{
-		algorithm->setStart(start);
+		algorithm->setStart(map);
 	}
 
 	void	execute(Map& map)
@@ -50,6 +54,7 @@ private:
 	Algo		*algorithm;
 	BFS			bfs;
 	Dijkstra	dijkstra;
+	Astar		aStar;
 };
 
 #endif
