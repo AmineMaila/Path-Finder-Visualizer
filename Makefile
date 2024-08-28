@@ -1,6 +1,6 @@
 CPP= g++
 
-FLAGS= -Wall -Werror -Wextra -std=c++11 -g -g3
+FLAGS= -Wall -Werror -Wextra -std=c++11
 
 INCLUDES= ./Screen.hpp ./Map.hpp InputManager.hpp Dijkstra.hpp BFS.hpp Algo.hpp AlgoManager.hpp Astar.hpp
 

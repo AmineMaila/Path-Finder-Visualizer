@@ -33,7 +33,7 @@ void	Astar::run(Map& map)
 			{
 				next.gcost = currNode.gcost + directions[i].second;
 				next.fcost = next.gcost + heuristic(next.coords, map.end);
-				if (next.fcost < fcosts[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords)) // ((prev[next.coords.y][next.coords.x].x == -2 && prev[next.coords.y][next.coords.x].y == -2) &&
+				if (next.fcost < fcosts[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords))
 				{
 					fcosts[next.coords.y][next.coords.x] = next.fcost;
 					aStar.push(next);
