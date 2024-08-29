@@ -2,18 +2,6 @@
 #define DIJKSTRA_HPP
 
 #include "Algo.hpp"
-#include "Map.hpp"
-
-struct	DNode
-{
-	int		cost;
-	Coords	coords;
-
-	bool operator>(const DNode& other) const
-	{
-        return cost > other.cost;
-	}
-};
 
 class Dijkstra : public Algo
 {

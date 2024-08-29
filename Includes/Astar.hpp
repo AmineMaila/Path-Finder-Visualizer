@@ -2,19 +2,6 @@
 #define ASTAR_HPP
 
 #include "Algo.hpp"
-#include "Map.hpp"
-
-struct	ANode
-{
-	int		gcost;
-	int		fcost;
-	Coords	coords;
-
-	bool operator>(const ANode& other) const
-	{
-        return fcost > other.fcost;
-	}
-};
 
 class Astar : public Algo
 {

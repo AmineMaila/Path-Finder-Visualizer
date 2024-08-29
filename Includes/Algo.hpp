@@ -3,7 +3,6 @@
 
 #include <queue>
 #include <vector>
-#include "Screen.hpp"
 #include "Map.hpp"
 
 // ABSTRACT CLASS ALGO
@@ -28,7 +27,6 @@ public:
 			map.setTile(previous.x, previous.y, PATH);
 			previous = prev[previous.y][previous.x];
 		}
-		std::cout << count << std::endl;
 	}
 
 	std::vector<std::vector<Coords> >	prev;

@@ -1,21 +1,18 @@
-#include "AlgoManager.hpp"
-#include "InputManager.hpp"
-#include "Screen.hpp"
-#include "Map.hpp"
+#include "Includes/Button.hpp"
+#include "Includes/Screen.hpp"
+#include "Includes/Map.hpp"
 
 int main()
 {
 	Screen			screen;
-	InputManager	in;
 	Map				map;
-	AlgoManager		algoManager;
 
 	while (true)
 	{
-		if (algoManager.simulate)
-			algoManager.execute(map);
+		if (screen.simulate)
+			screen.run(map);
 		map.drawGrid(screen);
 		screen.draw();
-		in.input(map, algoManager);
+		screen.input(map);
 	}
 }

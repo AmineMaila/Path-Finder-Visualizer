@@ -2,13 +2,13 @@ CPP= g++
 
 FLAGS= -Wall -Werror -Wextra -std=c++11
 
-INCLUDES= ./Screen.hpp ./Map.hpp InputManager.hpp Dijkstra.hpp BFS.hpp Algo.hpp AlgoManager.hpp Astar.hpp
+INCLUDES= ./Includes/Screen.hpp ./Includes/Map.hpp ./Includes/Dijkstra.hpp ./Includes/BFS.hpp ./Includes/Algo.hpp ./Includes/Astar.hpp ./Includes/Button.hpp ./Includes/utils.hpp
 
-SDL_LINKER= -framework SDL2
+SDL_LINKER= -framework SDL2 -framework SDL2_image
 
 SDL= -F/Users/mmaila/Library/Frameworks
 
-SRCS= main.cpp Screen.cpp Map.cpp InputManager.cpp BFS.cpp Dijkstra.cpp Astar.cpp
+SRCS= main.cpp Screen.cpp Map.cpp BFS.cpp Dijkstra.cpp Astar.cpp
 
 OBJSDIR= objects
 

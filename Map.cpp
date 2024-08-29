@@ -1,7 +1,8 @@
-#include "Map.hpp"
-#include "Algo.hpp"
-#include "Screen.hpp"
+#include "Includes/Map.hpp"
+#include "Includes/Screen.hpp"
+#include "Includes/utils.hpp"
 #include <cstdlib>
+#include <ctime>
 
 void	Map::setTile(int x, int y, Uint8 type)
 {
@@ -58,10 +59,24 @@ void	Map::reset( void )
 	}
 }
 
+void	Map::drawHeader(Screen& screen)
+{
+	int middle = (COLS * TILE_SIZE) / 2;
+	for (int i = 0; i < HEADER_OFFSET - 2; i++)
+		for (int j = 0; j < COLS * TILE_SIZE; j++)
+			screen.setPixel(j, i, TAN);
+	for (int i = 20; i < HEADER_OFFSET - 20; i++)
+		screen.setPixel(middle, i, COLOR);
+	for (int i = HEADER_OFFSET - 2; i < HEADER_OFFSET; i++)
+		for (int j = 0; j < COLS * TILE_SIZE; j++)
+			screen.setPixel(j, i, TAN);
+}
+
 void Map::drawGrid( Screen& screen )
 {
 	screen.lock();
-	int y = 0;
+	drawHeader(screen);
+	int y = HEADER_OFFSET;
 	for (auto& row : tiles)
 	{
 		int x = 0;
@@ -70,15 +85,15 @@ void Map::drawGrid( Screen& screen )
 			// draws outline
 			for (int i = 0; i < TILE_SIZE; i++)
 			{
-				screen.SetPixel(x + i, y, tile.outlineColor);
-				screen.SetPixel(x, y + i, tile.outlineColor);
-				screen.SetPixel(x + i, y + TILE_SIZE - 1, tile.outlineColor);
-				screen.SetPixel(x + TILE_SIZE - 1, y + i, tile.outlineColor);
+				screen.setPixel(x + i, y, tile.outlineColor);
+				screen.setPixel(x, y + i, tile.outlineColor);
+				screen.setPixel(x + i, y + TILE_SIZE - 1, tile.outlineColor);
+				screen.setPixel(x + TILE_SIZE - 1, y + i, tile.outlineColor);
 			}
 			// fills cell
 			for (int i = 1; i < TILE_SIZE - 1; i++)
 				for (int j = 1; j < TILE_SIZE - 1; j++)
-					screen.SetPixel(x + j, y + i, tile.color);;
+					screen.setPixel(x + j, y + i, tile.color);;
 			x += TILE_SIZE;
 		}
 		y += TILE_SIZE;
@@ -86,12 +101,17 @@ void Map::drawGrid( Screen& screen )
 	screen.unlock();
 }
 
-void Map::randomizeWalls( void )
+void	Map::clearWalls( void )
 {
 	for (int i = 0; i < ROWS; i++)
 		for (int j = 0; j < COLS; j++)
 			if (tiles[i][j].type == WALL)
 				setTile(j, i, EMPTY);
+}
+
+void	Map::randomizeWalls( void )
+{
+	clearWalls();
 	std::srand(std::time(0));
 	for (int i = 0; i < ROWS; i++)
 		for (int j = 0; j < COLS; j++)

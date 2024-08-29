@@ -1,7 +1,4 @@
-#include "Astar.hpp"
-#include "Screen.hpp"
-#include <queue>
-#include <vector>
+#include "Includes/Astar.hpp"
 
 Astar::~Astar() {}
 

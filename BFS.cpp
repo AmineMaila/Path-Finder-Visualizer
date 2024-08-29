@@ -1,5 +1,4 @@
-#include "BFS.hpp"
-#include "Algo.hpp"
+#include "Includes/BFS.hpp"
 
 BFS::BFS()
 {
