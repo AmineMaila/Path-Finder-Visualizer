@@ -2,6 +2,7 @@
 #define UTILS_HPP
 
 #include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
 
 # define START 1
 # define END 2
@@ -16,7 +17,7 @@
 # define BLACK 0xFF262626
 # define BLUE 0xFF255C99
 # define LIGHT_BLUE 0xFF7EA3CC
-# define CREAM 0xFFF3E9DC
+# define CREAM 0xFFffebcf
 # define LIVER 0xFFC2A883
 # define TAN 0xFFF1D6B0
 # define DARKRED 0xFF8C3131
@@ -29,7 +30,7 @@
 # define INF INT_MAX
 
 # define TILE_SIZE 20
-# define ROWS 32
+# define ROWS 30
 # define COLS 52
 # define HEADER_OFFSET 142
 # define SCREEN_WIDTH COLS * TILE_SIZE

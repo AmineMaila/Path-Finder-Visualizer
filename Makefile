@@ -2,7 +2,7 @@ CPP= g++
 
 FLAGS= -Wall -Werror -Wextra -std=c++11
 
-INCLUDES= ./Includes/Screen.hpp ./Includes/Map.hpp ./Includes/Dijkstra.hpp ./Includes/BFS.hpp ./Includes/Algo.hpp ./Includes/Astar.hpp ./Includes/Button.hpp ./Includes/utils.hpp
+INCLUDES= Includes/Screen.hpp Includes/Map.hpp Includes/Dijkstra.hpp Includes/BFS.hpp Includes/Algo.hpp Includes/Astar.hpp Includes/utils.hpp
 
 SDL_LINKER= -framework SDL2 -framework SDL2_image
 

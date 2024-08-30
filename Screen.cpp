@@ -130,7 +130,7 @@ void	Screen::input(Map& map)
 				switch (ev.button.button)
 				{
 					case SDL_BUTTON_LEFT:
-						if (DijkstraButton.selected)
+						if (DijkstraButton.selected && map.start != (Coords){-1, -1})
 						{
 							map.reset();
 							algorithm->reset();
@@ -138,7 +138,7 @@ void	Screen::input(Map& map)
 							algorithm = &dijkstra;
 							simulate = true;
 						}
-						else if (AstarButton.selected)
+						else if (AstarButton.selected && map.start != (Coords){-1, -1})
 						{
 							map.reset();
 							algorithm->reset();
@@ -146,7 +146,7 @@ void	Screen::input(Map& map)
 							algorithm = &aStar;
 							simulate = true;
 						}
-						else if (BFSButton.selected)
+						else if (BFSButton.selected && map.start != (Coords){-1, -1})
 						{
 							map.reset();
 							algorithm->reset();

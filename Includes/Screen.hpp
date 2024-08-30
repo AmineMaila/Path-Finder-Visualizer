@@ -1,8 +1,7 @@
 #ifndef SCREEN_HPP
 # define SCREEN_HPP
 
-# include <SDL2/SDL.h>
-# include <SDL2_image/SDL_image.h>
+// # include <SDL_image.h>
 
 # include "Button.hpp"
 #include "Dijkstra.hpp"

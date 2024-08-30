@@ -38,7 +38,7 @@ void	Dijkstra::run(Map& map)
 				}
 			}
 		}
-	}	
+	}
 }
 
 void	Dijkstra::reset( void )

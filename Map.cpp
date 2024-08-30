@@ -14,12 +14,16 @@ void	Map::setTile(int x, int y, Uint8 type)
 		case START:
 			if (start.x != -1 && start.y != -1)
 				setTile(start.x, start.y, EMPTY);
+			if (x == end.x && y == end.y)
+				end = (Coords){-1, -1};
 			start = (Coords){x, y};
 			tiles[y][x].color = GREEN;
 			break;
 		case END:
 			if (end.x != -1 && end.y != -1)
 				setTile(end.x, end.y, EMPTY);
+			if(x == start.x && y == start.y)
+				start = (Coords){-1, -1};
 			end = (Coords){x, y};
 			tiles[y][x].color = RED;
 			break;
