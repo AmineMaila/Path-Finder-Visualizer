@@ -2,6 +2,7 @@
 #include "Includes/Screen.hpp"
 #include "Includes/Map.hpp"
 #include "Includes/utils.hpp"
+#include <SDL2/SDL_timer.h>
 
 int main()
 {

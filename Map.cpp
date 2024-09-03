@@ -35,7 +35,7 @@ void	Map::setTile(int x, int y, Uint8 type)
 				start = (Coords){-1, -1};
 			else if (x == end.x && y == end.y)
 				end = (Coords){-1, -1};
-			tiles[y][x].color = CREAM;
+			tiles[y][x].color = WHITE;
 			tiles[y][x].outlineColor = TAN;
 			break;
 		case PATH:

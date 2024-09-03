@@ -2,12 +2,16 @@
 #include "Includes/Algo.hpp"
 #include "Includes/Astar.hpp"
 #include "Includes/utils.hpp"
+#include <SDL2/SDL_events.h>
+#include <array>
+#include <vector>
 
 Screen::Screen() : simulate(false), walls(false), buttonLeft(false), buttonRight(false), algorithm(&dijkstra)
 {
 	SDL_Init(SDL_INIT_VIDEO);
     SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window, &renderer);
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+
 	DijkstraButton.texNotSelected = IMG_LoadTexture(renderer, "Buttons/Dijkstra.png");
 	DijkstraButton.texSelected = IMG_LoadTexture(renderer, "Buttons/DijkstraSelected.png");
 	DijkstraButton.setButtonCoords(30, 20);
@@ -66,9 +70,15 @@ void Screen::draw( void )
 	SDL_RenderPresent(renderer);
 }
 
-void	Screen::reset( void )
+// void	Screen::genMaze( void )
+// {
+
+// }
+
+void	Screen::reset(Map& map)
 {
 	simulate = false;
+	map.reset();
 	algorithm->reset();
 }
 
@@ -117,7 +127,7 @@ void	Screen::input(Map& map)
 					if(ev.button.button ==  SDL_BUTTON_LEFT)
 					{
 						buttonLeft = true;
-						map.setTile(mouse.x / TILE_SIZE, (mouse.y - HEADER_OFFSET) / TILE_SIZE, WALL);
+						map.setTile(mouse.x / TILE_SIZE, (mouse.y - HEADER_OFFSET) / TILE_SIZE, scroll.types[scroll.index]);
 					}
 					else
 					{
@@ -132,24 +142,21 @@ void	Screen::input(Map& map)
 					case SDL_BUTTON_LEFT:
 						if (DijkstraButton.selected && map.start != (Coords){-1, -1})
 						{
-							map.reset();
-							algorithm->reset();
+							reset(map);
 							dijkstra.setStart(map);
 							algorithm = &dijkstra;
 							simulate = true;
 						}
 						else if (AstarButton.selected && map.start != (Coords){-1, -1})
 						{
-							map.reset();
-							algorithm->reset();
+							reset(map);
 							aStar.setStart(map);
 							algorithm = &aStar;
 							simulate = true;
 						}
 						else if (BFSButton.selected && map.start != (Coords){-1, -1})
 						{
-							map.reset();
-							algorithm->reset();
+							reset(map);
 							bfs.setStart(map);
 							algorithm = &bfs;
 							simulate = true;
@@ -165,8 +172,7 @@ void	Screen::input(Map& map)
 						}
 						else if (ResetButton.selected)
 						{
-							map.reset();
-							reset();
+							reset(map);
 						}
 						buttonLeft = false;
 						break;
@@ -178,9 +184,21 @@ void	Screen::input(Map& map)
 			case SDL_MOUSEMOTION:
 				SDL_GetMouseState(&mouse.x, &mouse.y);
 				if (buttonLeft)
-					map.setTile(mouse.x / TILE_SIZE, (mouse.y - HEADER_OFFSET) / TILE_SIZE, WALL);
-				else if (buttonRight)
-					map.setTile(mouse.x / TILE_SIZE, (mouse.y - HEADER_OFFSET) / TILE_SIZE, EMPTY);
+					map.setTile(mouse.x / TILE_SIZE, (mouse.y - HEADER_OFFSET) / TILE_SIZE, scroll.types[scroll.index]);
+				break;
+			case SDL_MOUSEWHEEL:
+				if (ev.wheel.y < 0)
+				{
+					scroll.index++;
+					if (scroll.index == 3)
+						scroll.index = 0;
+				}
+				else if (ev.wheel.y > 0)
+				{
+					scroll.index--;
+					if (scroll.index == -1)
+						scroll.index = 2;
+				}
 				break;
 		}
 	}

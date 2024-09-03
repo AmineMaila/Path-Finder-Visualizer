@@ -11,13 +11,14 @@
 # define CLOSED 5
 # define PATH 6
 
+# define CREAM 0xFFFFEBCF
 # define GREY 0xFF5F5E5D
 # define RED 0xFFB3001B
 # define GREEN 0xFF008000
 # define BLACK 0xFF262626
 # define BLUE 0xFF255C99
 # define LIGHT_BLUE 0xFF7EA3CC
-# define CREAM 0xFFffebcf
+# define WHITE 0xFFFCFBEE
 # define LIVER 0xFFC2A883
 # define TAN 0xFFF1D6B0
 # define DARKRED 0xFF8C3131
@@ -42,7 +43,7 @@ struct	Tile
 	Uint32	outlineColor;
 	int		type;
 
-	Tile(): color(CREAM), outlineColor(TAN), type(EMPTY) {}
+	Tile(): color(WHITE), outlineColor(TAN), type(EMPTY) {}
 };
 
 struct	Coords

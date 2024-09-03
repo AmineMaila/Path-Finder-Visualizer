@@ -11,13 +11,21 @@
 #include "utils.hpp"
 #include "Map.hpp"
 
+struct Scroll
+{
+	Uint32	types[3] = {START, END, WALL};
+	int		index;
+
+	Scroll() : index(0) {}
+};
+
 class Screen
 {
 public:
 	~Screen();
 	Screen();
 
-	void	reset( void );
+	void	reset(Map& map);
 	void	run(Map& map);
 	void	input(Map& map);
 	void	draw();
@@ -30,13 +38,16 @@ public:
 	bool	buttonLeft;
 	bool	buttonRight;
 	Coords	mouse;
+	Scroll	scroll;
 
 private:
 	Uint32				*pixels;
 	int					bytesPerRow;
 	SDL_Texture			*texture;
+
 	SDL_Renderer		*renderer;
 	SDL_Window			*window;
+
 	Button				DijkstraButton;
 	Button				AstarButton;
 	Button				BFSButton;
