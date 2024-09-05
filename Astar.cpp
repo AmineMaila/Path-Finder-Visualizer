@@ -15,33 +15,36 @@ int	Astar::heuristic(Coords& node1, Coords& node2)
 
 void	Astar::run(Map& map)
 {
-	if (!aStar.empty() && !endReached)
+	for (int i = 0; i < SPEED; i++)
 	{
-		ANode currNode = aStar.top();
-		aStar.pop();
-
-		for (int i = 0; i < 8; i++)
+		if (!aStar.empty() && !endReached)
 		{
-			ANode	next;
-			next.coords.x = currNode.coords.x + directions[i].first.x;
-			next.coords.y = currNode.coords.y + directions[i].first.y;
+			ANode currNode = aStar.top();
+			aStar.pop();
 
-			if (next.coords.x < COLS && next.coords.x >= 0 && next.coords.y < ROWS && next.coords.y >= 0 && map.tiles[next.coords.y][next.coords.x].type != WALL && map.tiles[next.coords.y][next.coords.x].type != START)
+			for (int i = 0; i < 8; i++)
 			{
-				next.gcost = currNode.gcost + directions[i].second;
-				next.fcost = next.gcost + heuristic(next.coords, map.end);
-				if (next.fcost < fcosts[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords))
+				ANode	next;
+				next.coords.x = currNode.coords.x + directions[i].first.x;
+				next.coords.y = currNode.coords.y + directions[i].first.y;
+
+				if (next.coords.x < COLS && next.coords.x >= 0 && next.coords.y < ROWS && next.coords.y >= 0 && map.tiles[next.coords.y][next.coords.x].type != WALL && map.tiles[next.coords.y][next.coords.x].type != START)
 				{
-					fcosts[next.coords.y][next.coords.x] = next.fcost;
-					aStar.push(next);
-					prev[next.coords.y][next.coords.x] = currNode.coords;
-					if (next.coords.x == map.end.x && next.coords.y == map.end.y)
+					next.gcost = currNode.gcost + directions[i].second;
+					next.fcost = next.gcost + heuristic(next.coords, map.end);
+					if (next.fcost < fcosts[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords))
 					{
-						endReached = true;
-						path(map);
-						return ;
+						fcosts[next.coords.y][next.coords.x] = next.fcost;
+						aStar.push(next);
+						prev[next.coords.y][next.coords.x] = currNode.coords;
+						if (next.coords.x == map.end.x && next.coords.y == map.end.y)
+						{
+							endReached = true;
+							path(map);
+							return ;
+						}
+						map.setTile(next.coords.x, next.coords.y, CLOSED);
 					}
-					map.setTile(next.coords.x, next.coords.y, CLOSED);
 				}
 			}
 		}

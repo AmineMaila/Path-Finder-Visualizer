@@ -9,32 +9,35 @@ Dijkstra::~Dijkstra() {}
 
 void	Dijkstra::run(Map& map)
 {
-	if (!dijkstra.empty() && !endReached)
+	for (int i = 0; i < SPEED; i++)
 	{
-		DNode currNode = dijkstra.top();
-		dijkstra.pop();
-
-		for (int i = 0; i < 8; i++)
+		if (!dijkstra.empty() && !endReached)
 		{
-			DNode	next;
-			next.coords.x = currNode.coords.x + directions[i].first.x;
-			next.coords.y = currNode.coords.y + directions[i].first.y;
+			DNode currNode = dijkstra.top();
+			dijkstra.pop();
 
-			if (next.coords.x < COLS && next.coords.x >= 0 && next.coords.y < ROWS && next.coords.y >= 0 && map.tiles[next.coords.y][next.coords.x].type != WALL && map.tiles[next.coords.y][next.coords.x].type != START)
+			for (int i = 0; i < 8; i++)
 			{
-				next.cost = currNode.cost + directions[i].second;
-				if (next.cost < costs[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords))
+				DNode	next;
+				next.coords.x = currNode.coords.x + directions[i].first.x;
+				next.coords.y = currNode.coords.y + directions[i].first.y;
+
+				if (next.coords.x < COLS && next.coords.x >= 0 && next.coords.y < ROWS && next.coords.y >= 0 && map.tiles[next.coords.y][next.coords.x].type != WALL && map.tiles[next.coords.y][next.coords.x].type != START)
 				{
-					costs[next.coords.y][next.coords.x] = next.cost;
-					dijkstra.push(next);
-					prev[next.coords.y][next.coords.x] = currNode.coords;
-					if (next.coords.x == map.end.x && next.coords.y == map.end.y)
+					next.cost = currNode.cost + directions[i].second;
+					if (next.cost < costs[next.coords.y][next.coords.x] && canMove(map, directions[i].first, currNode.coords))
 					{
-						endReached = true;
-						path(map);
-						return ;
+						costs[next.coords.y][next.coords.x] = next.cost;
+						dijkstra.push(next);
+						prev[next.coords.y][next.coords.x] = currNode.coords;
+						if (next.coords.x == map.end.x && next.coords.y == map.end.y)
+						{
+							endReached = true;
+							path(map);
+							return ;
+						}
+						map.setTile(next.coords.x, next.coords.y, CLOSED);
 					}
-					map.setTile(next.coords.x, next.coords.y, CLOSED);
 				}
 			}
 		}

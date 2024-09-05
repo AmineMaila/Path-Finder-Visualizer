@@ -30,9 +30,10 @@
 
 # define INF INT_MAX
 
-# define TILE_SIZE 20
-# define ROWS 30
-# define COLS 52
+# define SPEED 3
+# define TILE_SIZE 16
+# define ROWS 40
+# define COLS 72
 # define HEADER_OFFSET 142
 # define SCREEN_WIDTH COLS * TILE_SIZE
 # define SCREEN_HEIGHT ROWS * TILE_SIZE + HEADER_OFFSET
