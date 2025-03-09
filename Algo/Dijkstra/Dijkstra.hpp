@@ -1,7 +1,7 @@
 #ifndef DIJKSTRA_HPP
 #define DIJKSTRA_HPP
 
-#include "Algo.hpp"
+#include "../Algo.hpp"
 
 class Dijkstra : public Algo
 {

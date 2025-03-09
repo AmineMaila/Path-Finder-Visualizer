@@ -1,34 +1,44 @@
 CPP= g++
 
-FLAGS= -Wall -Werror -Wextra -std=c++11
+FLAGS= -Wall -Werror -Wextra -std=c++11 -O3
 
-INCLUDES= Includes/Screen.hpp Includes/Map.hpp Includes/Dijkstra.hpp Includes/BFS.hpp Includes/Algo.hpp Includes/Astar.hpp Includes/utils.hpp
+INCLUDES= Screen/Screen.hpp \
+			Screen/Button.hpp \
+			Map/Map.hpp \
+			Algo/Dijkstra/Dijkstra.hpp \
+			Algo/BFS/BFS.hpp \
+			Algo/Astar/Astar.hpp \
+			Algo/Algo.hpp \
+			Utils.hpp
 
-SDL_LINKER= -framework SDL2 -framework SDL2_image
+SRCS= main.cpp \
+		Screen/Screen.cpp \
+		Map/Map.cpp \
+		Algo/BFS/BFS.cpp \
+		Algo/Dijkstra/Dijkstra.cpp \
+		Algo/Astar/Astar.cpp
 
-SDL= -F/Users/mmaila/Library/Frameworks
-
-SRCS= main.cpp Screen.cpp Map.cpp BFS.cpp Dijkstra.cpp Astar.cpp
+SDL_INCLUDE= -I$(HOME)/local/include -I$(HOME)/local/include/SDL2
+SDL_LINKER= -L$(HOME)/local/lib -lSDL2 -lSDL2_image
 
 OBJSDIR= objects
-
 OBJS= $(SRCS:%.cpp=$(OBJSDIR)/%.o)
 
 NAME= PFV
 
-all : $(NAME)
+all: $(NAME)
 
-$(NAME) : $(OBJS)
-	$(CPP) $(FLAGS) $(SDL) $(SDL_LINKER) $(OBJS) -o $(NAME)
+$(NAME): $(OBJS)
+	$(CPP) $(FLAGS) $(OBJS) $(SDL_LINKER) -o $(NAME)
 
-$(OBJSDIR)/%.o : %.cpp $(INCLUDES)
-	@mkdir -p $(OBJSDIR)
-	$(CPP) $(FLAGS) $(SDL) -c $< -o $@
+$(OBJSDIR)/%.o: %.cpp $(INCLUDES)
+	@mkdir -p $(dir $@)
+	$(CPP) $(FLAGS) $(SDL_INCLUDE) -c $< -o $@
 
-clean : 
-	rm -rf  $(OBJS) $(OBJSDIR)
+clean:
+	rm -rf $(OBJS) $(OBJSDIR)
 
-fclean : clean
+fclean: clean
 	rm -f $(NAME)
 
-re : fclean all
+re: fclean all

@@ -1,4 +1,4 @@
-#include "Includes/BFS.hpp"
+#include "BFS.hpp"
 
 BFS::BFS()
 {

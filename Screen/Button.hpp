@@ -1,7 +1,7 @@
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
-#include "utils.hpp"
+#include "../Utils.hpp"
 #include <iostream>
 class Button
 {

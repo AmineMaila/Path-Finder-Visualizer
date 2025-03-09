@@ -1,4 +1,4 @@
-#include "Includes/Dijkstra.hpp"
+#include "Dijkstra.hpp"
 
 Dijkstra::Dijkstra(): costs(ROWS, std::vector<int>(COLS, INF))
 {

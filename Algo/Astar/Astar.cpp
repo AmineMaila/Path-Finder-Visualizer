@@ -1,4 +1,4 @@
-#include "Includes/Astar.hpp"
+#include "Astar.hpp"
 
 Astar::~Astar() {}
 

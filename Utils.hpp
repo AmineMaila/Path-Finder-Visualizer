@@ -2,7 +2,7 @@
 #define UTILS_HPP
 
 #include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
+#include <SDL_image.h>
 
 # define START 1
 # define END 2
@@ -30,11 +30,11 @@
 
 # define INF INT_MAX
 
-# define SPEED 3
-# define TILE_SIZE 16
+# define SPEED 5
+# define TILE_SIZE 24
 # define ROWS 40
 # define COLS 72
-# define HEADER_OFFSET 142
+# define HEADER_OFFSET 200
 # define SCREEN_WIDTH COLS * TILE_SIZE
 # define SCREEN_HEIGHT ROWS * TILE_SIZE + HEADER_OFFSET
 

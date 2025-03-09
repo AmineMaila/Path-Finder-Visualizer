@@ -1,6 +1,6 @@
-#include "Includes/Map.hpp"
-#include "Includes/Screen.hpp"
-#include "Includes/utils.hpp"
+#include "Map.hpp"
+#include "../Screen/Screen.hpp"
+#include "../Utils.hpp"
 #include <cstdlib>
 #include <ctime>
 

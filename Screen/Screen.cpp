@@ -1,7 +1,7 @@
-#include "Includes/Screen.hpp"
-#include "Includes/Algo.hpp"
-#include "Includes/Astar.hpp"
-#include "Includes/utils.hpp"
+#include "Screen.hpp"
+#include "../Algo/Algo.hpp"
+#include "../Algo/Astar/Astar.hpp"
+#include "../Utils.hpp"
 #include <SDL2/SDL_events.h>
 #include <array>
 #include <vector>

@@ -1,7 +1,7 @@
 #ifndef ASTAR_HPP
 #define ASTAR_HPP
 
-#include "Algo.hpp"
+#include "../Algo.hpp"
 
 class Astar : public Algo
 {

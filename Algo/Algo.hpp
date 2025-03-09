@@ -3,7 +3,8 @@
 
 #include <queue>
 #include <vector>
-#include "Map.hpp"
+#include "../Map/Map.hpp"
+#include <climits>
 
 // ABSTRACT CLASS ALGO
 class Algo

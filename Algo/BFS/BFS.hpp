@@ -1,7 +1,7 @@
 #ifndef BFS_HPP
 # define BFS_HPP
 
-#include "Algo.hpp"
+#include "../Algo.hpp"
 
 class BFS : public Algo
 {

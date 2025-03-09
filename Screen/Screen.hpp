@@ -4,12 +4,12 @@
 // # include <SDL_image.h>
 
 # include "Button.hpp"
-#include "Dijkstra.hpp"
-#include "Astar.hpp"
-#include "BFS.hpp"
-#include "Algo.hpp"
-#include "utils.hpp"
-#include "Map.hpp"
+# include "../Algo/Dijkstra/Dijkstra.hpp"
+# include "../Algo/Astar/Astar.hpp"
+# include "../Algo/BFS/BFS.hpp"
+# include "../Algo/Algo.hpp"
+# include "../Utils.hpp"
+# include "../Map/Map.hpp"
 
 struct Scroll
 {
