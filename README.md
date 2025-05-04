@@ -33,18 +33,15 @@ make
 pathfinder/
 ├── include/       # SDL2 and SDL2_image headers
 ├── lib/           # Pre-compiled static libraries
-├── src/           # Source code
-│   ├── Algo/      # Pathfinding algorithms
-│   │   ├── Astar/
-│   │   ├── BFS/
-│   │   └── Dijkstra/
-│   ├── Buttons/   # UI button resources
-│   ├── Map/       # Grid and map representation
-│   ├── Screen/    # Rendering and UI
-│   ├── objects/   # Game objects
-│   └── main.cpp   # Main entry point
-├── bin/           # Compiled binary output
-└── dist/          # Distribution package
+└── src/           # Source code
+    ├── Algo/      # Pathfinding algorithms
+    │   ├── Astar/
+    │   ├── BFS/
+    │   └── Dijkstra/
+    ├── Buttons/   # UI button resources
+    ├── Map/       # Grid and map representation
+    ├── Screen/    # Rendering and UI
+    └── main.cpp   # Main entry point
 ```
 
 ## How It Works
