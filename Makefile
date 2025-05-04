@@ -1,44 +1,44 @@
-CPP= g++
+CC := g++
+CFLAGS := -Wall -Werror -Wextra -O3 -I./include -std=c++11
+LDFLAGS := -L./lib
 
-FLAGS= -Wall -Werror -Wextra -std=c++11 -O3
+ifeq ($(OS),Windows_NT) # Windows
+    LDLIBS := -lSDL2_image -lSDL2main -lSDL2 -lm -luser32 -lgdi32 -lwinmm -ldxguid
+    NAME := pathfinder.exe
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux) # Linux
+        LDLIBS := -lSDL2_image -lSDL2 -lm -ldl -pthread
+        NAME := pathfinder
+    endif
+    ifeq ($(UNAME_S),Darwin) # MacOS
+        LDLIBS := -lSDL2_image -lSDL2 -lm -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
+        NAME := pathfinder
+    endif
+endif
 
-INCLUDES= Screen/Screen.hpp \
-			Screen/Button.hpp \
-			Map/Map.hpp \
-			Algo/Dijkstra/Dijkstra.hpp \
-			Algo/BFS/BFS.hpp \
-			Algo/Astar/Astar.hpp \
-			Algo/Algo.hpp \
-			Utils.hpp
+SRC := $(shell find src -name "*.cpp")
+INCLUDE := $(shell find src -name "*.hpp")
+OBJ_DIR := src/objects
+OBJ := $(patsubst src/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
-SRCS= main.cpp \
-		Screen/Screen.cpp \
-		Map/Map.cpp \
-		Algo/BFS/BFS.cpp \
-		Algo/Dijkstra/Dijkstra.cpp \
-		Algo/Astar/Astar.cpp
-
-SDL_INCLUDE= -I$(HOME)/local/include -I$(HOME)/local/include/SDL2
-SDL_LINKER= -L$(HOME)/local/lib -lSDL2 -lSDL2_image
-
-OBJSDIR= objects
-OBJS= $(SRCS:%.cpp=$(OBJSDIR)/%.o)
-
-NAME= PFV
+$(shell mkdir -p $(dir $(OBJ)))
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CPP) $(FLAGS) $(OBJS) $(SDL_LINKER) -o $(NAME)
+$(NAME): $(OBJ)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-$(OBJSDIR)/%.o: %.cpp $(INCLUDES)
+$(OBJ_DIR)/%.o: src/%.cpp $(INCLUDE)
 	@mkdir -p $(dir $@)
-	$(CPP) $(FLAGS) $(SDL_INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJS) $(OBJSDIR)
+	rm -rf $(OBJ_DIR)
 
-fclean: clean
-	rm -f $(NAME)
+fclean : clean
+	rm -rf $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re
