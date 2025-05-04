@@ -54,7 +54,7 @@ The visualization shows how different pathfinding algorithms traverse a grid to 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE]() file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/AmineMaila/Path-Finder-Visualizer/tree/master?tab=MIT-1-ov-file) file for details
 
 ## Acknowledgments
 
