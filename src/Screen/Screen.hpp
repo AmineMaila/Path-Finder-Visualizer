@@ -12,7 +12,7 @@ struct Scroll
 	Uint32	types[3] = {START, END, WALL};
 	int		index;
 
-	Scroll() : index(0) {}
+	Scroll() : index(2) {}
 };
 
 class Screen
