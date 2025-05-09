@@ -29,9 +29,11 @@ make
 
 ## Usage
 
-To set the START node hover over a Tile and press <kbd>s</kbd>
-To set the END node hover over a Tile and press <kbd>e</kbd>
-To set the WALL node hover over a Tile and click **Left Mouse Button**
+To set the START node hover over a Tile and press <kbd>s</kbd>.
+
+To set the END node hover over a Tile and press <kbd>e</kbd>.
+
+To set the WALL node hover over a Tile and click **Left Mouse Button**.
 
 ## Project Structure
 
